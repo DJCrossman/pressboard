@@ -1,0 +1,28 @@
+{
+  "name": "pressboard",
+  "version": "0.0.0",
+  "description": "A utility for taking screenshots of a web application using Puppeteer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DJCrossman/pressboard.git"
+  },
+  "keywords": [
+    "documentation",
+    "docs",
+    "capture",
+    "screenshot"
+  ],
+  "author": "David Crossman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DJCrossman/pressboard/issues"
+  },
+  "homepage": "https://github.com/DJCrossman/pressboard#readme",
+  "dependencies": {
+    "puppeteer": "^2.0.0"
+  }
+}
