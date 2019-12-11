@@ -1,11 +1,12 @@
 const fs = require('fs')
 const puppeteer = require('puppeteer');
 
-(async () => {
+module.exports = async () => {
   try {
+    let dir = './docs'
     let content = []
     let config = {}
-    let configPath = __dirname + '/pressboard.conf.json'
+    let configPath = './pressboard.conf.json'
     config = await new Promise((resolve) => {
       fs.readFile(configPath, 'utf8', (err, data) => {
         if (err) throw err
@@ -28,10 +29,12 @@ const puppeteer = require('puppeteer');
       if (route.params && typeof route.params === 'object') {
         Object.keys(route.params).forEach((key) => route.path = route.path.replace(`:${key}`, route.params[key]))
       }
-      let name = route.name || route.path.replace('/', '-')
+      let name = route.name || route.path.replace(/[\W_]+/g, "-")
       try {
-        await page.goto(`${baseUrl}/#/${route.path}`);
+        await page.goto(`${baseUrl}${route.path}`);
         if(!!route.selector) await page.waitForSelector(route.selector)
+        if (!fs.existsSync(dir)){ fs.mkdirSync(dir); }
+        if (!fs.existsSync(dir + '/imgs')){ fs.mkdirSync(dir + '/imgs'); }
         await page.screenshot({path: `./docs/imgs/${name}.png`});
         let title = await page.title()
         await browser.close();
@@ -41,11 +44,12 @@ const puppeteer = require('puppeteer');
           path: `./imgs/${name}.png`
         })
       } catch (e) {
-        console.log(`👎 Failed to load "${baseUrl}/#/${route.path}"`)
+        console.log(`👎 Failed to load "${baseUrl}${route.path}"`)
       }
     }))
+    if (!fs.existsSync(dir)){ fs.mkdirSync(dir); }
     fs.writeFileSync(
-      __dirname + "/docs/README.md",
+      dir + "/README.md",
       content.sort((a,b) => a.index - b.index)
              .map((c) => `# ${c.title} \n ![${c.title}](${c.path})`).join('\n\n')
     )
@@ -56,4 +60,4 @@ const puppeteer = require('puppeteer');
     console.error(e)
     process.exit(1)
   }
-})();
+}
