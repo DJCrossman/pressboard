@@ -1,6 +1,6 @@
 {
   "name": "pressboard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A utility for taking screenshots of a web application using Puppeteer.",
   "main": "index.js",
   "scripts": {
